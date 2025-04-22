@@ -1,0 +1,96 @@
+## 🧱 Project Overview
+TrimPilot is a startup reimagining barbershop operations with queue management, signage, and customer engagement tools. We have a working MVP written in raw PHP + MySQL and are now migrating it to a modern Laravel 10+ application.
+
+Executive Summary
+TrimPilot is an AI-powered platform designed to modernize barbershops by combining queue management, digital signage, and in-shop marketing into a single plug-and-play solution. We’ve built and validated a working MVP in raw PHP + MySQL, and we’re now migrating to Laravel 10+ to improve scalability, maintainability, and development velocity as we prepare for live pilot deployments with barbershops in Southern California.
+
+This document outlines the scope of the initial Laravel rebuild.
+
+
+---
+
+## 🎯 Project Goals
+- Rebuild the existing MVP using Laravel 10+
+- Structure the backend using best practices (controllers, models, services)
+- Implement Blade-based frontend using Bootstrap
+- Maintain compatibility with the existing MySQL schema
+
+---
+
+## 🔧 Stack
+- Laravel 10+
+- Blade templates + Bootstrap
+- MySQL (v5.7+)
+- Hosted on Ubuntu 20.04 with NGINX
+
+---
+
+## 📦 Phase 1: Required Features
+
+### 1. Authentication
+- Use Laravel Breeze or Jetstream
+- Login/registration system
+- Basic user role support (e.g. admin vs. operator)
+
+### 2. Dashboard
+- Post-login dashboard showing:
+  - Active queue count
+  - Average wait time
+  - Quick links: start queue, clear queue, view customers
+
+### 3. Queue Management
+- Add new walk-ins (name, phone)
+- List current queue with timestamps
+- Mark customer as "served" or remove
+
+### 4. Public Check-in Page
+- Blade page for customers to self check-in (no login)
+- Fields: name, phone number
+- Confirmation screen
+
+### 5. Digital Signage View
+- Read-only display for in-shop TV
+- Show current queue
+- Auto-refresh or polling (JS preferred)
+
+### 6. Barbershop Profile
+- Shop name, address, hours
+- Toggle services (e.g., enable Wi-Fi capture)
+
+---
+
+## 📂 Provided Assets
+- ZIP of current raw PHP project
+- MySQL export/schema
+- Landing page design (index.html)
+- Wireframe guidance (upon request)
+
+---
+
+## 📆 Timeline
+- Start ASAP
+- First milestone in ~1 week
+- Delivery goal: full MVP in 2–3 weeks
+
+---
+
+## 🧪 (Optional) Bonus Task
+Rebuild the existing login + queue logic as a Laravel demo module.
+
+---
+
+## ✅ Deliverables
+- Laravel 10+ codebase (ZIP or GitHub repo)
+- Working features listed above
+- `README.md` with setup instructions
+- MySQL integration
+- NGINX-compatible deployment
+
+---
+
+## 🙌 Expectations
+- Follow Laravel MVC best practices
+- Use Blade for templating
+- Comment code where applicable
+- Frequent progress updates via Git or messages
+
