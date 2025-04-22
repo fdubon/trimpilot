@@ -1,11 +1,17 @@
-## 🧱 Project Overview
-TrimPilot is a startup reimagining barbershop operations with queue management, signage, and customer engagement tools. We have a working MVP written in raw PHP + MySQL and are now migrating it to a modern Laravel 10+ application.
+## 🧠 Executive Summary
+TrimPilot is an AI-powered platform designed to modernize barbershops by combining queue management,
+digital signage, and in-shop marketing into a single plug-and-play solution. 
+We’ve built and validated a working MVP in raw PHP + MySQL,
+and we’re now migrating to Laravel 10+ to improve scalability, maintainability,
+and development velocity as we prepare for live pilot deployments with barbershops in Southern California.
 
-Executive Summary
-TrimPilot is an AI-powered platform designed to modernize barbershops by combining queue management, digital signage, and in-shop marketing into a single plug-and-play solution. We’ve built and validated a working MVP in raw PHP + MySQL, and we’re now migrating to Laravel 10+ to improve scalability, maintainability, and development velocity as we prepare for live pilot deployments with barbershops in Southern California.
+---
+
+## 🧱 Project Overview
+TrimPilot is a startup reimagining barbershop operations with queue management, signage, and customer engagement tools.
+We have a working MVP written in raw PHP + MySQL and are now migrating it to a modern Laravel 10+ application.
 
 This document outlines the scope of the initial Laravel rebuild.
-
 
 ---
 
@@ -21,11 +27,12 @@ This document outlines the scope of the initial Laravel rebuild.
 - Laravel 10+
 - Blade templates + Bootstrap
 - MySQL (v5.7+)
-- Hosted on Ubuntu 20.04 with NGINX
+- Hosted on Ubuntu 20.04 with NGINX or Apache, Preferably NGINX
 
 ---
 
 ## 📦 Phase 1: Required Features
+       These features already exist in the current codebase but need to be ported or recreated in Laravel
 
 ### 1. Authentication
 - Use Laravel Breeze or Jetstream
@@ -64,6 +71,52 @@ This document outlines the scope of the initial Laravel rebuild.
 - MySQL export/schema
 - Landing page design (index.html)
 - Wireframe guidance (upon request)
+
+---
+
+## 🌐 Custom Domain + Subdomain Routing
+TrimPilot currently supports **subdomain-based tenant routing** in the format:
+
+```
+shop-name.trimpilot.com
+```
+
+Each barbershop's site and features are scoped under its own subdomain, allowing for:
+
+- Isolated branding and user experience
+- Easy URL sharing and recognition
+- Support for SEO and direct-to-consumer interactions
+
+### 🔁 Custom Domain Support via CNAME
+Shops that prefer to use their own domain (e.g., `cutsbycarlos.com`) can configure a **CNAME record** to point to their TrimPilot subdomain, such as:
+
+```
+app.cutsbycarlos.com → cname → shop-name.trimpilot.com
+```
+
+This enables shops to:
+- Maintain brand consistency
+- Use their own domain across all digital touchpoints
+- Still benefit from TrimPilot’s multi-tenant backend
+
+### 🛠️ Developer Notes
+- Subdomain detection is handled via Laravel’s middleware layer
+- Route logic dynamically determines `shop_id` based on the incoming domain
+- This allows each request to be scoped to the correct tenant context without hardcoding
+
+---
+
+## 🧭 Multi-Tenant Hub-and-Spoke Model
+TrimPilot is structured using a hub-and-spoke (multi-tenant) model where each barbershop operates as an independent “spoke” with its own site, queue, and customer data, while the central “hub” provides shared infrastructure like authentication, theming templates, and search. This allows each shop to manage its operations autonomously while still benefiting from centralized tools, updates, and discovery features.
+
+### 🔐 Tenant Isolation Strategy
+- All tenant-specific records include a `shop_id` foreign key
+- Middleware checks are used to ensure users only access their own data
+- Blade templates are scoped to each shop’s branding and preferences
+- Laravel's `Auth::user()` and policies limit resource access
+- Subdomain and CNAME-based routing helps maintain isolation across domains
+
+![TrimPilot Hub-and-Spoke Model](trimpilot_hub_spoke_model.png)
 
 ---
 
