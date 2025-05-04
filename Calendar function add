@@ -1,0 +1,133 @@
+Our current templates are rigid and hard to customize, especially for barbershop owners who aren’t tech-savvy. 
+We need at least 2–3 beautiful, mobile-friendly templates that feel modern, fast, and trustworthy — 
+right out of the box. Most users will not customize them much, so visual polish and clarity matter more than flexibility.”
+
+Strategic Options
+        Option A: Build Templates in the Existing CodeIgniter Stack
+        ✅ Pros:
+        
+        Faster to deploy
+        
+        Keeps existing system intact
+        
+        ❌ Cons:
+        
+        Time spent on legacy tech
+        
+        Harder to scale or maintain
+        
+        Will require full rework later when moving to Laravel
+
+Option B: Prioritize Laravel Upgrade, Then Build Templates
+        ✅ Pros:
+        
+        Cleaner architecture using Laravel Blade
+        
+        Easier for future developers to contribute
+        
+        Templates can plug into upcoming AI/queue/schedule features
+        
+        ❌ Cons:
+        
+        Slight delay in shipping templates
+        
+        Requires upfront dev effort
+
+🎯 Recommendation
+Communicate to your developer:
+
+“Let’s prioritize the Laravel upgrade so we can future-proof the platform. 
+Once the Blade framework is in place, I’d like to design at least 2–3 modern templates. 
+These templates will act as the ‘face’ of each shop, so let’s make them beautiful, 
+responsive, and easy to populate from our existing database schema.”
+
+        You can also attach inspiration links from sites like:
+        
+        https://onepagelove.com/tag/barber
+        
+        https://themeforest.net/category/site-templates?term=barber
+
+
+---------------------------------------------------------------------------------
+
+Recommended Calendar Architecture for TrimPilot
+
+1. Shop Calendar (Global View)
+        
+        Purpose: Overview of all appointments, time blocks, and queue status across all workers.
+        
+        Access: Visible only to shop owners/admins.
+        
+        Use Cases:
+        
+        Quickly view who's available and when
+        
+        Block shop-wide hours (e.g., closed for holidays)
+        
+        Display a public “shop queue” if needed
+
+2. Individual Calendar (Per Worker)
+        Purpose: Each barber manages their own availability.
+        
+        Access: Barber can log in and update their own schedule (and only theirs).
+        
+        Use Cases:
+        
+        Set personal working hours
+        
+        Block out vacation or lunch time
+        
+        View their own upcoming appointments
+
+
+🧱 Suggested Implementation Plan
+        Phase 1: Create shop_calendar and worker_calendar tables (normalized by shop_id and user_id)
+        
+        Phase 2: Use FullCalendar.js or similar for the UI (can integrate into Laravel Blade templates)
+        
+        Phase 3: Sync with SMS reminders and queue visibility
+        
+        Phase 4: AI integration for smart recommendations and automated follow-ups
+
+🔒 Permissions Matrix
+          Role	        View Shop Calendar	View Own Calendar	    Edit Shop Calendar	  Edit Own Calendar
+          Owner/Admin  	     ✅	                   ✅	                 ✅	                    ✅
+          Worker	           ❌	                   ✅	                 ❌	                    ✅
+          Customer	         ❌	                   ❌	                 ❌                   	❌
+
+          Customer should be able to see each barber's available spots and be able to pick one available time.
+
+Database Table Schema ideas:
+
+-- Shop Calendar Table
+CREATE TABLE shop_calendar (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    shop_id INT NOT NULL,
+    title VARCHAR(255),
+    description TEXT,
+    start_time DATETIME,
+    end_time DATETIME,
+    is_closed BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (shop_id) REFERENCES shops(id)
+);
+
+
+-- Worker Calendar Table
+CREATE TABLE worker_calendar (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    shop_id INT NOT NULL,
+    title VARCHAR(255),
+    description TEXT,
+    start_time DATETIME,
+    end_time DATETIME,
+    is_available BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (shop_id) REFERENCES shops(id)
+);
+
+
